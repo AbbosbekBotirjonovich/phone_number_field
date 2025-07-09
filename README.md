@@ -125,21 +125,21 @@ class _HomePageState extends State<HomePage> {
 
 ## ⚙️ Configuration Options
 
-| Parameter              | Type                | Default                           | Description                                                                                  |
-|------------------------|---------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
-| `onCountrySelected`    | `Function`          | `null`                            | It works if a matching country is found for the country code; otherwise, it may return null. |
-| `initialCountry`       | `Country`           | `null`                            | It is used to set the selected country code either through search or a custom widget.        |
-| `initialCountryCode`   | `String`            | `null`                            | Logs request body                                                                            |
-| `label`                | `String`            | `true`                            | Logs response body                                                                           |
-| `focusColor`           | `Color`             | `primaryColor`                    | Logs errors and error bodies                                                                 |
-| `borderColor`          | `Color`             | `secondaryColor`                  | Minimized JSON indentation                                                                   |
-| `borderRadius`         | `double`            | `8`                               | (Reserved) Max width of the log lines                                                        |
-| `labelStyle`           | `TextStyle`         | `null`                            | Enables logging only in debug mode                                                           |
-| `isLabelInside`        | `bool`              | `false`                           | Enables logging only in debug mode                                                           |
-| `onChanged`            | `Function`          | `null`                            | Enables logging only in debug mode                                                           |
-| `onCompleted`          | `Function`          | `null`                            | Enables logging only in debug mode                                                           |
-| `suffix`               | `Widget`            | `null`                            | Enables logging only in debug mode                                                           |
-| `contentPaddingCode`   | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Enables logging only in debug mode                                                           |
-| `contentPaddingNumber` | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Enables logging only in debug mode                                                           |
+| Parameter              | Type                | Default                           | Description                                                                                                        |
+|------------------------|---------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| `onCountrySelected`    | `Function`          | `null`                            | It works if a matching country is found for the country code; otherwise, it may return null.                       |
+| `initialCountry`       | `Country`           | `null`                            | It is used to set the selected country code either through search or a custom widget.                              |
+| `initialCountryCode`   | `String`            | `null`                            | To set a default country code (e.g., "998") when the `TextField` is created.                                       |
+| `label`                | `String`            | `true`                            | Label for the `TextField`.                                                                                         |
+| `focusColor`           | `Color`             | `primaryColor`                    | Used for the border color when the `TextField` is focused.                                                         |
+| `borderColor`          | `Color`             | `secondaryColor`                  | Used for the border color when the `TextField` is unfocused.                                                       |
+| `borderRadius`         | `double`            | `8`                               | Used to define the border radius.                                                                                  |
+| `labelStyle`           | `TextStyle`         | `null`                            | Used to apply a text style to the label.                                                                           |
+| `isLabelInside`        | `bool`              | `false`                           | Determines whether the label text is placed inside the border or above it.                                         |
+| `onChanged`            | `Function`          | `null`                            | Triggered when there is a change in the `TextField`.                                                               |
+| `onCompleted`          | `Function`          | `null`                            | Triggered when input in the `TextField` is completed; returns the full phone number, for example: "+998901234567". |
+| `suffix`               | `Widget`            | `null`                            | Used for the suffix widget of the `TextField`.                                                                     |
+| `contentPaddingCode`   | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Padding for the country code section.                                                                              |
+| `contentPaddingNumber` | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Padding for the phone number section.                                                                              |
 
 ---
