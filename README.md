@@ -7,7 +7,7 @@ A Flutter widget to format and validate phone numbers in a text field.
 ## ✨ Features
 
 - ✅ Formats phone numbers
-- 📦 Supports 100+ countries
+- 📦 Supports 200+ countries
 - 🧩 Supports auto-completion
 - 🔍 Supports search
 - 📝 Supports custom widget
@@ -120,3 +120,26 @@ class _HomePageState extends State<HomePage> {
   }
 }
 ```                         
+
+---
+
+## ⚙️ Configuration Options
+
+| Parameter              | Type                | Default                           | Description                                                                                  |
+|------------------------|---------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
+| `onCountrySelected`    | `Function`          | `null`                            | It works if a matching country is found for the country code; otherwise, it may return null. |
+| `initialCountry`       | `Country`           | `null`                            | It is used to set the selected country code either through search or a custom widget.        |
+| `initialCountryCode`   | `String`            | `null`                            | Logs request body                                                                            |
+| `label`                | `String`            | `true`                            | Logs response body                                                                           |
+| `focusColor`           | `Color`             | `primaryColor`                    | Logs errors and error bodies                                                                 |
+| `borderColor`          | `Color`             | `secondaryColor`                  | Minimized JSON indentation                                                                   |
+| `borderRadius`         | `double`            | `8`                               | (Reserved) Max width of the log lines                                                        |
+| `labelStyle`           | `TextStyle`         | `null`                            | Enables logging only in debug mode                                                           |
+| `isLabelInside`        | `bool`              | `false`                           | Enables logging only in debug mode                                                           |
+| `onChanged`            | `Function`          | `null`                            | Enables logging only in debug mode                                                           |
+| `onCompleted`          | `Function`          | `null`                            | Enables logging only in debug mode                                                           |
+| `suffix`               | `Widget`            | `null`                            | Enables logging only in debug mode                                                           |
+| `contentPaddingCode`   | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Enables logging only in debug mode                                                           |
+| `contentPaddingNumber` | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Enables logging only in debug mode                                                           |
+
+---
