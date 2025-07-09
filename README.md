@@ -18,6 +18,17 @@ A Flutter widget to format and validate phone numbers in a text field.
 
 ---
 
+## 📦 Installation
+
+Add `phone_number_field` to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  phone_number_field: ^1.0.0
+```
+
+Then, import the phone_number_field package into your project.
+
 ## Usage
 
 ```dart
