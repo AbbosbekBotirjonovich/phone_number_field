@@ -2,6 +2,16 @@
 
 A Flutter widget to format and validate phone numbers in a text field.
 
+---
+
+## ✨ Features
+
+- ✅ Formats phone numbers
+- 📦 Supports 100+ countries
+- 🧩 Supports auto-completion
+
+---
+
 ## Usage
 
 ```dart
