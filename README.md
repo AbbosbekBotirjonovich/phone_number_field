@@ -9,6 +9,12 @@ A Flutter widget to format and validate phone numbers in a text field.
 - ✅ Formats phone numbers
 - 📦 Supports 100+ countries
 - 🧩 Supports auto-completion
+- 🔍 Supports search
+- 📝 Supports custom widget
+- 📱 Auto-format
+- 🎉 Easy to use
+- 🚀 Fast and stable
+- 🌟 Easy to customize
 
 ---
 
