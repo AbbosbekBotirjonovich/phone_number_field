@@ -28,6 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late TextEditingController _controller;
+  Country? _country;
 
   @override
   void initState() {
@@ -49,7 +50,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              showSearch(context: context, delegate: CountrySearchDelegate());
+              showSearch(context: context, delegate: CountrySearchDelegate()).then((value) {
+                if (value != null) {
+                  setState(() {
+                    _country = value;
+                  });
+                }
+              });
             },
             icon: Icon(Icons.search),
           ),
@@ -60,10 +67,16 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           spacing: 20,
           children: [
-            TextField(controller: _controller),
+            TextField(controller: _controller, readOnly: true),
             PhoneNumberField(
+              initialCountry: _country,
+              label: 'Phone Number',
+              isLabelInside: false,
               onCountrySelected: (country) {
-                _controller.text = '${country?.emoji ?? ''} ${country?.code ?? ''}';
+                _controller.text = '${country?.emoji ?? ''} ${country?.name ?? ''}';
+              },
+              onCompleted: (value) {
+                print("phone number => $value");
               },
             ),
           ],

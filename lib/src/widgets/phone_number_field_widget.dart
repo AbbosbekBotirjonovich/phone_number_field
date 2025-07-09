@@ -14,11 +14,25 @@ class PhoneNumberField extends StatefulWidget {
     this.label,
     this.borderColor,
     this.focusColor,
+    this.borderRadius = 8,
+    this.labelStyle,
+    this.isLabelInside = false,
+    this.onChanged,
+    this.initialCountryCode,
+    this.onCompleted,
+    this.suffix,
+    this.contentPaddingCode,
+    this.contentPaddingNumber,
   });
 
   /// Called when the user selects a country.
   final ValueChanged<Country?>? onCountrySelected;
+
+  /// The initial country to display.
   final Country? initialCountry;
+
+  /// The initial country code to display. only works one time create widget
+  final String? initialCountryCode;
 
   /// The label displayed above the text field.
   final String? label;
@@ -26,8 +40,32 @@ class PhoneNumberField extends StatefulWidget {
   ///This color is used to colorize the border when the text field is focused. defaults to [Theme.of(context).colorScheme.primary]
   final Color? focusColor;
 
-  ///This color is used to colorize the border when the text field is not focused. defaults to [Theme.of(context).inputDecorationTheme.border?.borderSide.color]
+  ///This color is used to colorize the border when the text field is not focused. defaults to [Theme.of(context).colorScheme.secondary]
   final Color? borderColor;
+
+  /// The border radius of the text field. defaults to 8
+  final double borderRadius;
+
+  /// The style of the label.
+  final TextStyle? labelStyle;
+
+  /// If true, the label is displayed inside the text field. defaults to false
+  final bool isLabelInside;
+
+  /// Called when the text in the text field changes.
+  final ValueChanged<String>? onChanged;
+
+  /// Called when the text in the text field is completed
+  final ValueChanged<String>? onCompleted;
+
+  /// The suffix widget to display at the end of the text field.
+  final Widget? suffix;
+
+  /// The padding of the text field.
+  final EdgeInsetsGeometry? contentPaddingCode;
+
+  /// The padding of the text field.
+  final EdgeInsetsGeometry? contentPaddingNumber;
 
   @override
   State<PhoneNumberField> createState() => _PhoneNumberFieldState();
@@ -62,10 +100,21 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
     _numberController = TextEditingController();
     getCountries();
     _selectedCountry.addListener(_onCountrySelectListener);
-    if (widget.initialCountry != null) {
-      _selectedCountry.value = widget.initialCountry;
+
+    if (widget.initialCountryCode != null) {
+      _selectedCountry.value = findCountryCode(widget.initialCountryCode!);
+      _codeController.text = widget.initialCountryCode!;
     }
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant PhoneNumberField oldWidget) {
+    if (oldWidget.initialCountry != widget.initialCountry && widget.initialCountry != null) {
+      _selectedCountry.value = widget.initialCountry;
+      _codeController.text = widget.initialCountry!.code;
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -94,11 +143,13 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
           builder: (_, value, _) {
             return CustomPaint(
               painter: _PhoneNumberFieldBorderPainter(
+                isLabelInside: widget.isLabelInside,
+                radius: widget.borderRadius,
+                labelStyle: widget.labelStyle,
                 label: widget.label,
                 color: value
                     ? (widget.focusColor ?? Theme.of(context).colorScheme.primary)
-                    : (widget.borderColor ??
-                          Theme.of(context).inputDecorationTheme.border?.borderSide.color),
+                    : (widget.borderColor ?? Theme.of(context).colorScheme.secondary),
               ),
               child: Row(
                 children: [
@@ -108,7 +159,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                       focusNode: _codeFocusNode,
                       decoration: _InputDecoration(
                         prefixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 14),
+                          padding: widget.contentPaddingCode ?? const EdgeInsets.only(left: 14),
                           child: Text('+'),
                         ),
                         suffixIcon: CustomPaint(
@@ -160,12 +211,19 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                           focusNode: _numberFocusNode,
                           keyboardType: TextInputType.phone,
                           decoration: _InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: 16),
+                            contentPadding:
+                                widget.contentPaddingNumber ?? const EdgeInsets.only(left: 16),
+                            suffix: widget.suffix,
                           ),
                           onChanged: (value) {
                             if (value.isEmpty) {
                               FocusScope.of(context).requestFocus(_codeFocusNode);
                             }
+                          },
+                          onFieldSubmitted: (value) {
+                            widget.onCompleted?.call(
+                              '+${_codeController.text}${_numberController.text.replaceAll(' ', '')}',
+                            );
                           },
                           inputFormatters: [
                             CountryFormatter(),
@@ -195,12 +253,14 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
   final String? label;
   final double radius;
   final bool isLabelInside;
+  final TextStyle? labelStyle;
 
   _PhoneNumberFieldBorderPainter({
     this.label,
     this.color,
     this.radius = 8,
     this.isLabelInside = false,
+    this.labelStyle,
   });
 
   @override
@@ -209,14 +269,14 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
 
     final textSpan = TextSpan(
       text: label,
-      style: TextStyle(color: color, fontSize: 12),
+      style: labelStyle ?? TextStyle(color: color, fontSize: 12),
     );
 
     final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
     textPainter.layout();
 
     final labelOffset = isLabelInside
-        ? Offset(14, rect.height / 3 - textPainter.height)
+        ? Offset(14, rect.height / 4 - textPainter.height)
         : Offset(14, -textPainter.height / 2);
     final labelWidth = textPainter.width;
 
@@ -228,12 +288,12 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
     final path = Path();
 
     final left = rect.left;
-    final top = rect.top;
+    final top = rect.top - (isLabelInside ? 4 : 0);
     final right = rect.right;
-    final bottom = rect.bottom;
+    final bottom = rect.bottom + (isLabelInside ? 4 : 0);
 
     path.moveTo(left + radius, top);
-    path.lineTo(isLabelInside || label == null ? rect.center.dx : labelOffset.dx, top);
+    path.lineTo(isLabelInside || label == null ? rect.center.dx : labelOffset.dx - 4, top);
 
     path.moveTo(labelOffset.dx + labelWidth + 4, top);
     path.lineTo(right - radius, top);
@@ -258,29 +318,29 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
 }
 
 class _InputDecoration extends InputDecoration {
-  final EdgeInsetsGeometry? contentPadding;
-  final Widget? suffix;
-  final Widget? prefix;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
+  final EdgeInsetsGeometry? $contentPadding;
+  final Widget? $suffix;
+  final Widget? $prefix;
+  final Widget? $prefixIcon;
+  final Widget? $suffixIcon;
 
   const _InputDecoration({
-    this.prefixIcon,
-    this.suffixIcon,
-    this.prefix,
-    this.contentPadding,
-    this.suffix,
-  }) : super(
+    super.prefixIcon,
+    super.suffixIcon,
+    super.prefix,
+    super.suffix,
+    super.contentPadding,
+  }) : $prefix = prefix,
+       $suffix = suffix,
+       $contentPadding = contentPadding,
+       $prefixIcon = prefixIcon,
+       $suffixIcon = suffixIcon,
+       super(
          border: InputBorder.none,
          focusedBorder: InputBorder.none,
          enabledBorder: InputBorder.none,
          errorBorder: InputBorder.none,
          disabledBorder: InputBorder.none,
-         contentPadding: contentPadding,
-         suffix: suffix,
-         prefix: prefix,
-         prefixIcon: prefixIcon,
-         suffixIcon: suffixIcon,
          enabled: true,
          prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
          suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
