@@ -9,10 +9,10 @@ A Flutter widget to format and validate phone numbers in a text field.
 <table>
   <tr>
     <td>
-      <img src="./screenshots/first.png" alt="First screenshot" width="1290" height="2796" />
+      <img src="./screenshots/first.png" alt="First screenshot" width="1290" height="1398" />
     </td>
     <td>
-      <img src="./screenshots/second.png" alt="Second screenshot" width="1290" height="2796" />
+      <img src="./screenshots/second.png" alt="Second screenshot" width="1290" height="1398" />
     </td>
   </tr>
 </table>
