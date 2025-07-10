@@ -11,13 +11,13 @@ This widget can be used to make customised text field to take phone number input
 <table>
   <tr>
     <td>
-      <img src="./screenshots/first.png" alt="First screenshot" width="215" />
+      <img src="https://raw.githubusercontent.com/AbbosbekBotirjonovich/phone_number_field/main/screenshots/first.png" alt="First screenshot" width="215" />
     </td>
     <td>
-      <img src="./screenshots/second.png" alt="Second screenshot" width="215" />
+      <img src="https://raw.githubusercontent.com/AbbosbekBotirjonovich/phone_number_field/main/screenshots/second.png" alt="Second screenshot" width="215" />
     </td>
     <td>
-      <img src="./screenshots/preview.gif" alt="GIF preview" width="215" />
+      <img src="https://raw.githubusercontent.com/AbbosbekBotirjonovich/phone_number_field/main/screenshots/preview.gif" alt="GIF preview" width="215" />
     </td>
   </tr>
 </table>
