@@ -1,6 +1,6 @@
 name: phone_number_field
 description: "A package that provides a Flutter widget for formatting and validating phone numbers in text fields."
-version: 1.0.0
+version: 1.1.1
 homepage: https://github.com/AbbosbekBotirjonovich/phone_number_field.git
 
 environment:
