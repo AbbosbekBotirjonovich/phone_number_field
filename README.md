@@ -6,7 +6,16 @@ A Flutter widget to format and validate phone numbers in a text field.
 
 ## Screenshots
 
-<img src="./screenshots/first.png" alt="First screenshot" width="430" height="932" /> <img src="./screenshots/second.png" alt="First screenshot" width="430" height="932" />
+<table>
+  <tr>
+    <td>
+      <img src="./screenshots/first.png" alt="First screenshot" width="1290" height="2796" />
+    </td>
+    <td>
+      <img src="./screenshots/second.png" alt="Second screenshot" width="1290" height="2796" />
+    </td>
+  </tr>
+</table>
 
 ## ✨ Features
 
