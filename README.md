@@ -163,3 +163,29 @@ class _HomePageState extends State<HomePage> {
 | `contentPaddingNumber` | `EdgeInsetGeomatry` | `const EdgeInsets.only(left: 14)` | Padding for the phone number section.                                                                              |
 
 ---
+
+## 📬 Feedback & Issues
+
+We'd love to hear your thoughts and help improve the package!
+
+If you:
+
+- Encounter a bug 🐞
+- Notice something not working as expected ⚠️
+- Have suggestions for improvements 💡
+- Want to request a new feature ✨
+
+Please don't hesitate to [open an issue](../../issues). When reporting a bug, try to include:
+
+- A brief but clear description of the issue
+- Steps to reproduce it
+- Your environment (Flutter version, platform, etc.)
+- Screenshots or logs (if applicable)
+
+Your feedback is incredibly valuable — thank you for helping us make this project better! 🙌
+
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+See the [LICENSE](LICENSE) file for details.
