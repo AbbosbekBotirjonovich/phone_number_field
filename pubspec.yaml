@@ -21,7 +21,6 @@ flutter:
     - assets/countries.txt
 
 topics:
-  - intl phone number
-  - country picker
-  - custom phone number field
-  - phone number formatter
+  - intl-phone-number
+  - country-picker
+  - phone-number-formatter
