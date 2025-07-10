@@ -8,7 +8,6 @@ mixin CountryMixin {
 
   List<Country> get countries => _countries;
 
-
   Future<List<Country>> getCountries() async {
     final countriesData = await rootBundle.loadString(
       'packages/phone_number_field/assets/countries.txt',

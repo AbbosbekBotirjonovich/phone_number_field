@@ -19,3 +19,9 @@ dev_dependencies:
 flutter:
   assets:
     - assets/countries.txt
+
+topics:
+  - intl phone number
+  - country picker
+  - custom phone number field
+  - phone number formatter

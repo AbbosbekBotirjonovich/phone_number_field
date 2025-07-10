@@ -1,6 +1,8 @@
 # PhoneNumberField
 
-A Flutter widget to format and validate phone numbers in a text field.
+A customised Flutter TextFormField to input international phone number along with country code.
+
+This widget can be used to make customised text field to take phone number input for any country along with an option to choose country code from a custom widgets.
 
 ---
 

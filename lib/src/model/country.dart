@@ -4,5 +4,10 @@ class Country {
   final String name;
   final String? format;
 
-  Country({required this.code, required this.emoji, required this.name, this.format});
+  Country({
+    required this.code,
+    required this.emoji,
+    required this.name,
+    this.format,
+  });
 }

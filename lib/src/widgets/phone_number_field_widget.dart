@@ -110,7 +110,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
 
   @override
   void didUpdateWidget(covariant PhoneNumberField oldWidget) {
-    if (oldWidget.initialCountry != widget.initialCountry && widget.initialCountry != null) {
+    if (oldWidget.initialCountry != widget.initialCountry &&
+        widget.initialCountry != null) {
       _selectedCountry.value = widget.initialCountry;
       _codeController.text = widget.initialCountry!.code;
     }
@@ -148,8 +149,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                 labelStyle: widget.labelStyle,
                 label: widget.label,
                 color: value
-                    ? (widget.focusColor ?? Theme.of(context).colorScheme.primary)
-                    : (widget.borderColor ?? Theme.of(context).colorScheme.secondary),
+                    ? (widget.focusColor ??
+                          Theme.of(context).colorScheme.primary)
+                    : (widget.borderColor ??
+                          Theme.of(context).colorScheme.secondary),
               ),
               child: Row(
                 children: [
@@ -159,7 +162,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                       focusNode: _codeFocusNode,
                       decoration: _InputDecoration(
                         prefixIcon: Padding(
-                          padding: widget.contentPaddingCode ?? const EdgeInsets.only(left: 14),
+                          padding:
+                              widget.contentPaddingCode ??
+                              const EdgeInsets.only(left: 14),
                           child: Text('+'),
                         ),
                         suffixIcon: CustomPaint(
@@ -171,7 +176,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                       onChanged: (value) {
                         _selectedCountry.value = findCountryCode(value);
 
-                        if (value.length >= 2 && _selectedCountry.value != null) {
+                        if (value.length >= 2 &&
+                            _selectedCountry.value != null) {
                           _codeController.text = _selectedCountry.value!.code;
 
                           FocusScope.of(context).requestFocus(_numberFocusNode);
@@ -179,14 +185,18 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                         }
 
                         if (value.length >= 4) {
-                          _selectedCountry.value ??= findCountryStartWith(value);
+                          _selectedCountry.value ??= findCountryStartWith(
+                            value,
+                          );
                           if (_selectedCountry.value != null) {
                             _codeController.text = _selectedCountry.value!.code;
                             _numberController.text = value.replaceFirst(
                               _selectedCountry.value!.code,
                               '',
                             );
-                            widget.onCountrySelected?.call(_selectedCountry.value!);
+                            widget.onCountrySelected?.call(
+                              _selectedCountry.value!,
+                            );
                           }
                           FocusScope.of(context).requestFocus(_numberFocusNode);
                         }
@@ -212,12 +222,15 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                           keyboardType: TextInputType.phone,
                           decoration: _InputDecoration(
                             contentPadding:
-                                widget.contentPaddingNumber ?? const EdgeInsets.only(left: 16),
+                                widget.contentPaddingNumber ??
+                                const EdgeInsets.only(left: 16),
                             suffix: widget.suffix,
                           ),
                           onChanged: (value) {
                             if (value.isEmpty) {
-                              FocusScope.of(context).requestFocus(_codeFocusNode);
+                              FocusScope.of(
+                                context,
+                              ).requestFocus(_codeFocusNode);
                             }
                           },
                           onFieldSubmitted: (value) {
@@ -227,7 +240,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
                           },
                           inputFormatters: [
                             CountryFormatter(),
-                            if (value != null && value.format != null && value.format!.isNotEmpty)
+                            if (value != null &&
+                                value.format != null &&
+                                value.format!.isNotEmpty)
                               MaskTextInputFormatter(
                                 mask: value.format,
                                 filter: {'X': RegExp(r'[0-9]')},
@@ -272,7 +287,10 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
       style: labelStyle ?? TextStyle(color: color, fontSize: 12),
     );
 
-    final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
     textPainter.layout();
 
     final labelOffset = isLabelInside
@@ -293,20 +311,35 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
     final bottom = rect.bottom + (isLabelInside ? 4 : 0);
 
     path.moveTo(left + radius, top);
-    path.lineTo(isLabelInside || label == null ? rect.center.dx : labelOffset.dx - 4, top);
+    path.lineTo(
+      isLabelInside || label == null ? rect.center.dx : labelOffset.dx - 4,
+      top,
+    );
 
     path.moveTo(labelOffset.dx + labelWidth + 4, top);
     path.lineTo(right - radius, top);
 
-    path.arcToPoint(Offset(right, top + radius), radius: Radius.circular(radius));
+    path.arcToPoint(
+      Offset(right, top + radius),
+      radius: Radius.circular(radius),
+    );
     path.lineTo(right, bottom - radius);
-    path.arcToPoint(Offset(right - radius, bottom), radius: Radius.circular(radius));
+    path.arcToPoint(
+      Offset(right - radius, bottom),
+      radius: Radius.circular(radius),
+    );
 
     path.lineTo(left + radius, bottom);
-    path.arcToPoint(Offset(left, bottom - radius), radius: Radius.circular(radius));
+    path.arcToPoint(
+      Offset(left, bottom - radius),
+      radius: Radius.circular(radius),
+    );
 
     path.lineTo(left, top + radius);
-    path.arcToPoint(Offset(left + radius, top), radius: Radius.circular(radius));
+    path.arcToPoint(
+      Offset(left + radius, top),
+      radius: Radius.circular(radius),
+    );
 
     canvas.drawPath(path, borderPaint);
 

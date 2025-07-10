@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
       home: HomePage(),
     );
   }
@@ -51,7 +53,10 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              showSearch(context: context, delegate: CountrySearchDelegate()).then((value) {
+              showSearch(
+                context: context,
+                delegate: CountrySearchDelegate(),
+              ).then((value) {
                 if (value != null) {
                   setState(() {
                     _country = value;
@@ -74,7 +79,8 @@ class _HomePageState extends State<HomePage> {
               label: 'Phone Number',
               isLabelInside: false,
               onCountrySelected: (country) {
-                _controller.text = '${country?.emoji ?? ''} ${country?.name ?? ''}';
+                _controller.text =
+                    '${country?.emoji ?? ''} ${country?.name ?? ''}';
               },
               onCompleted: (value) {
                 print("phone number => $value");

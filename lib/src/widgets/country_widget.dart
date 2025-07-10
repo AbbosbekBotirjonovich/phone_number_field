@@ -15,7 +15,10 @@ class CountryWidget extends StatelessWidget {
       leading: Text(country.emoji, style: TextStyle(fontSize: 24)),
       trailing: Text(
         '+${country.code}',
-        style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
+        style: TextStyle(
+          fontSize: 14,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
     );
   }

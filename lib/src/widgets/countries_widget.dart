@@ -35,7 +35,10 @@ class _CountriesWidgetState extends State<CountriesWidget> with CountryMixin {
         title: Text(countries[index].name),
         trailing: Text(
           '+${countries[index].code}',
-          style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
+          style: TextStyle(
+            fontSize: 14,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
       ),
     );
@@ -95,6 +98,7 @@ class CountrySearchDelegate extends SearchDelegate<Country> with CountryMixin {
     );
   }
 
-  List<Country> get _suggestions =>
-      _countries.where((item) => item.name.toLowerCase().contains(query.toLowerCase())).toList();
+  List<Country> get _suggestions => _countries
+      .where((item) => item.name.toLowerCase().contains(query.toLowerCase()))
+      .toList();
 }
