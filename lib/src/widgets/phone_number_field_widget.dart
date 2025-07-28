@@ -114,8 +114,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
 
   @override
   void didUpdateWidget(covariant PhoneNumberField oldWidget) {
-    if (oldWidget.initialCountry != widget.initialCountry &&
-        widget.initialCountry != null) {
+    if (oldWidget.initialCountry != widget.initialCountry && widget.initialCountry != null) {
       _selectedCountry.value = widget.initialCountry;
       _codeController.text = widget.initialCountry!.code;
     }
@@ -140,142 +139,127 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> with CountryMixin {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, ctc) {
-        var maxWidth = ctc.maxWidth;
-        return ValueListenableBuilder(
-          valueListenable: _isFocused,
-          builder: (_, value, _) {
-            return CustomPaint(
-              painter: _PhoneNumberFieldBorderPainter(
-                isLabelInside: widget.isLabelInside,
-                radius: widget.borderRadius,
-                labelStyle: widget.labelStyle,
-                label: widget.label,
-                color: value
-                    ? (widget.focusColor ??
-                          Theme.of(context).colorScheme.primary)
-                    : (widget.borderColor ??
-                          Theme.of(context).colorScheme.secondary),
-                borderWidth: widget.borderWidth,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _codeController,
-                      focusNode: _codeFocusNode,
-                      decoration: _InputDecoration(
-                        prefixIcon: Padding(
-                          padding:
-                              widget.contentPaddingCode ??
-                              const EdgeInsets.only(left: 14),
-                          child: Text('+'),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(filled: false),
+      ),
+      child: LayoutBuilder(
+        builder: (context, ctc) {
+          var maxWidth = ctc.maxWidth;
+          return ValueListenableBuilder(
+            valueListenable: _isFocused,
+            builder: (_, value, _) {
+              return CustomPaint(
+                painter: _PhoneNumberFieldBorderPainter(
+                  isLabelInside: widget.isLabelInside,
+                  radius: widget.borderRadius,
+                  labelStyle: widget.labelStyle,
+                  label: widget.label,
+                  color: value
+                      ? (widget.focusColor ?? Theme.of(context).colorScheme.primary)
+                      : (widget.borderColor ?? Theme.of(context).colorScheme.secondary),
+                  borderWidth: widget.borderWidth,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _codeController,
+                        focusNode: _codeFocusNode,
+                        decoration: _InputDecoration(
+                          prefixIcon: Padding(
+                            padding: widget.contentPaddingCode ?? const EdgeInsets.only(left: 14),
+                            child: Text('+'),
+                          ),
+                          suffixIcon: CustomPaint(
+                            painter: _VerticalDividerPainter(),
+                            child: Text(''),
+                          ),
                         ),
-                        suffixIcon: CustomPaint(
-                          painter: _VerticalDividerPainter(),
-                          child: Text(''),
-                        ),
-                      ),
-                      keyboardType: TextInputType.phone,
-                      onChanged: (value) {
-                        _selectedCountry.value = findCountryCode(value);
+                        keyboardType: TextInputType.phone,
+                        onChanged: (value) {
+                          _selectedCountry.value = findCountryCode(value);
 
-                        if (value.length >= 2 &&
-                            _selectedCountry.value != null) {
-                          _codeController.text = _selectedCountry.value!.code;
-
-                          FocusScope.of(context).requestFocus(_numberFocusNode);
-                          return;
-                        }
-
-                        if (value.length >= 4) {
-                          _selectedCountry.value ??= findCountryStartWith(
-                            value,
-                          );
-                          if (_selectedCountry.value != null) {
+                          if (value.length >= 2 && _selectedCountry.value != null) {
                             _codeController.text = _selectedCountry.value!.code;
-                            _numberController.text = value.replaceFirst(
-                              _selectedCountry.value!.code,
-                              '',
-                            );
-                            widget.onCountrySelected?.call(
-                              _selectedCountry.value!,
-                            );
-                            widget.onChanged?.call(
-                              '+$value${_numberController.text}'.replaceAll(
-                                ' ',
-                                '',
-                              ),
-                            );
+
+                            FocusScope.of(context).requestFocus(_numberFocusNode);
+                            return;
                           }
-                          FocusScope.of(context).requestFocus(_numberFocusNode);
+
+                          if (value.length >= 4) {
+                            _selectedCountry.value ??= findCountryStartWith(value);
+                            if (_selectedCountry.value != null) {
+                              _codeController.text = _selectedCountry.value!.code;
+                              _numberController.text = value.replaceFirst(
+                                _selectedCountry.value!.code,
+                                '',
+                              );
+                              widget.onCountrySelected?.call(_selectedCountry.value!);
+                              widget.onChanged?.call(
+                                '+$value${_numberController.text}'.replaceAll(' ', ''),
+                              );
+                            }
+                            FocusScope.of(context).requestFocus(_numberFocusNode);
+                          }
+                        },
+                        inputFormatters: [CountryFormatter(maxLength: 4)],
+                      ),
+                    ),
+                    KeyboardListener(
+                      focusNode: FocusNode(),
+                      onKeyEvent: (value) {
+                        if (value.logicalKey == LogicalKeyboardKey.backspace &&
+                            _numberController.text.isEmpty) {
+                          FocusScope.of(context).requestFocus(_codeFocusNode);
                         }
                       },
-                      inputFormatters: [CountryFormatter(maxLength: 4)],
-                    ),
-                  ),
-                  KeyboardListener(
-                    focusNode: FocusNode(),
-                    onKeyEvent: (value) {
-                      if (value.logicalKey == LogicalKeyboardKey.backspace &&
-                          _numberController.text.isEmpty) {
-                        FocusScope.of(context).requestFocus(_codeFocusNode);
-                      }
-                    },
-                    child: SizedBox(
-                      width: maxWidth * .75,
-                      child: ValueListenableBuilder(
-                        valueListenable: _selectedCountry,
-                        builder: (context, value, child) => TextFormField(
-                          controller: _numberController,
-                          focusNode: _numberFocusNode,
-                          keyboardType: TextInputType.phone,
-                          decoration: _InputDecoration(
-                            contentPadding:
-                                widget.contentPaddingNumber ??
-                                const EdgeInsets.only(left: 16),
-                            suffix: widget.suffix,
+                      child: SizedBox(
+                        width: maxWidth * .75,
+                        child: ValueListenableBuilder(
+                          valueListenable: _selectedCountry,
+                          builder: (context, value, child) => TextFormField(
+                            controller: _numberController,
+                            focusNode: _numberFocusNode,
+                            keyboardType: TextInputType.phone,
+                            decoration: _InputDecoration(
+                              contentPadding:
+                                  widget.contentPaddingNumber ?? const EdgeInsets.only(left: 16),
+                              suffix: widget.suffix,
+                            ),
+                            onChanged: (value) {
+                              if (value.isEmpty) {
+                                FocusScope.of(context).requestFocus(_codeFocusNode);
+                              }
+                              widget.onChanged?.call(
+                                '+${_codeController.text}$value'.replaceAll(' ', ''),
+                              );
+                            },
+                            onFieldSubmitted: (value) {
+                              widget.onCompleted?.call(
+                                '+${_codeController.text}${_numberController.text.replaceAll(' ', '')}',
+                              );
+                            },
+                            inputFormatters: [
+                              CountryFormatter(),
+                              if (value != null && value.format != null && value.format!.isNotEmpty)
+                                MaskTextInputFormatter(
+                                  mask: value.format,
+                                  filter: {'X': RegExp(r'[0-9]')},
+                                  initialText: _numberController.text,
+                                ),
+                            ],
                           ),
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              FocusScope.of(
-                                context,
-                              ).requestFocus(_codeFocusNode);
-                            }
-                            widget.onChanged?.call(
-                              '+${_codeController.text}$value'.replaceAll(
-                                ' ',
-                                '',
-                              ),
-                            );
-                          },
-                          onFieldSubmitted: (value) {
-                            widget.onCompleted?.call(
-                              '+${_codeController.text}${_numberController.text.replaceAll(' ', '')}',
-                            );
-                          },
-                          inputFormatters: [
-                            CountryFormatter(),
-                            if (value != null &&
-                                value.format != null &&
-                                value.format!.isNotEmpty)
-                              MaskTextInputFormatter(
-                                mask: value.format,
-                                filter: {'X': RegExp(r'[0-9]')},
-                                initialText: _numberController.text,
-                              ),
-                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -306,10 +290,7 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
       style: labelStyle ?? TextStyle(color: color, fontSize: 12),
     );
 
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-    );
+    final textPainter = TextPainter(text: textSpan, textDirection: TextDirection.ltr);
     textPainter.layout();
 
     final labelOffset = isLabelInside
@@ -330,35 +311,20 @@ class _PhoneNumberFieldBorderPainter extends CustomPainter {
     final bottom = rect.bottom + (isLabelInside ? 4 : 0);
 
     path.moveTo(left + radius, top);
-    path.lineTo(
-      isLabelInside || label == null ? rect.center.dx : labelOffset.dx - 4,
-      top,
-    );
+    path.lineTo(isLabelInside || label == null ? rect.center.dx : labelOffset.dx - 4, top);
 
     path.moveTo(labelOffset.dx + labelWidth + 4, top);
     path.lineTo(right - radius, top);
 
-    path.arcToPoint(
-      Offset(right, top + radius),
-      radius: Radius.circular(radius),
-    );
+    path.arcToPoint(Offset(right, top + radius), radius: Radius.circular(radius));
     path.lineTo(right, bottom - radius);
-    path.arcToPoint(
-      Offset(right - radius, bottom),
-      radius: Radius.circular(radius),
-    );
+    path.arcToPoint(Offset(right - radius, bottom), radius: Radius.circular(radius));
 
     path.lineTo(left + radius, bottom);
-    path.arcToPoint(
-      Offset(left, bottom - radius),
-      radius: Radius.circular(radius),
-    );
+    path.arcToPoint(Offset(left, bottom - radius), radius: Radius.circular(radius));
 
     path.lineTo(left, top + radius);
-    path.arcToPoint(
-      Offset(left + radius, top),
-      radius: Radius.circular(radius),
-    );
+    path.arcToPoint(Offset(left + radius, top), radius: Radius.circular(radius));
 
     canvas.drawPath(path, borderPaint);
 
