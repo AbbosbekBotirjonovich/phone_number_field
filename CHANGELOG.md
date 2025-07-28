@@ -1,3 +1,7 @@
+## 1.2.0
+
+* TextInputAction added
+
 ## 1.1.1 
 
 * Fixed a bug
