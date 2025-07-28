@@ -46,7 +46,7 @@ Add `phone_number_field` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  phone_number_field: ^1.0.0
+  phone_number_field: ^1.1.2
 ```
 
 Then, import the phone_number_field package into your project.
